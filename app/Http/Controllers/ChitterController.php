@@ -69,7 +69,7 @@ class ChitterController extends Controller
      */
     public function update(Request $request, Chitter $chitter)
     {
-        //
+
     }
 
     /**
