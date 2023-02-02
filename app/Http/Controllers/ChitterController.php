@@ -15,10 +15,10 @@ class ChitterController extends Controller
      * Display a listing of the resource.
      *
      */
-    public function index()
+    public function index(): \Inertia\Response
     {
         return Inertia::render('Chitters/Index', [
-
+            'chitters' => Chitter::with('user:id,name')->latest()->get()
         ]);
     }
 

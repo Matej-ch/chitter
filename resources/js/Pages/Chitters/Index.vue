@@ -12,6 +12,14 @@
                 <InputError :message="form.errors.message" class="mt-2"/>
                 <PrimaryButton class="mt-4">Chitt</PrimaryButton>
             </form>
+
+            <div class="mt-6 bg-white shadow-sm rounded-lg divide-y">
+                <Chirp
+                    v-for="chitter in chitters"
+                    :key="chitter.id"
+                    :chitter="chitter"
+                />
+            </div>
         </div>
     </AuthenticatedLayout>
 </template>
@@ -21,6 +29,9 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import {useForm, Head} from '@inertiajs/vue3';
+import Chirp from '@/Components/Chitter.vue';
+
+defineProps(['chitters']);
 
 const form = useForm({
     message: '',
