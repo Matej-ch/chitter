@@ -3,18 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chitter;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Inertia\Inertia;
 
 class ChitterController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return 'hello world';
+        return Inertia::render('Chitters/Index', [
+
+        ]);
     }
 
     /**
@@ -30,18 +35,24 @@ class ChitterController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Application|RedirectResponse|Redirector
      */
-    public function store(Request $request)
+    public function store(Request $request): Redirector|RedirectResponse|Application
     {
-        //
+        $validated = $request->validate([
+            'message' => 'required|string|max:255'
+        ]);
+
+        $request->user()->chitters()->create($validated);
+
+        return redirect(route('chitter.index'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Chitter  $chitter
+     * @param \App\Models\Chitter $chitter
      * @return \Illuminate\Http\Response
      */
     public function show(Chitter $chitter)
@@ -52,7 +63,7 @@ class ChitterController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Chitter  $chitter
+     * @param \App\Models\Chitter $chitter
      * @return \Illuminate\Http\Response
      */
     public function edit(Chitter $chitter)
@@ -63,8 +74,8 @@ class ChitterController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Chitter  $chitter
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Chitter $chitter
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Chitter $chitter)
@@ -75,7 +86,7 @@ class ChitterController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Chitter  $chitter
+     * @param \App\Models\Chitter $chitter
      * @return \Illuminate\Http\Response
      */
     public function destroy(Chitter $chitter)
