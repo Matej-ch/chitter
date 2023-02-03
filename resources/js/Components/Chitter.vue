@@ -29,6 +29,9 @@
                             @click="editing = true">
                             Edit
                         </button>
+                        <DropdownLink as="button" :href="route('chitter.destroy', chitter.id)" method="delete">
+                            Delete
+                        </DropdownLink>
                     </template>
                 </Dropdown>
             </div>
@@ -49,6 +52,7 @@
 </template>
 
 <script setup>
+import DropdownLink from '@/Components/DropdownLink.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import InputError from '@/Components/InputError.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';

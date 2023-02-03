@@ -85,11 +85,13 @@ class ChitterController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Chitter $chitter
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Chitter $chitter)
+    public function destroy(Chitter $chitter): Redirector|Application|RedirectResponse
     {
-        //
+        $this->authorize('delete', $chitter);
+
+        $chitter->delete();
+
+        return redirect(route('chitter.index'));
     }
 }

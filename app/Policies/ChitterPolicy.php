@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Chitter;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class ChitterPolicy
 {
@@ -47,11 +48,8 @@ class ChitterPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param \App\Models\User $user
-     * @param \App\Models\Chitter $chitter
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Chitter $chitter)
+    public function update(User $user, Chitter $chitter): Response|bool
     {
         return $chitter->user()->is($user);
     }
@@ -59,13 +57,10 @@ class ChitterPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param \App\Models\User $user
-     * @param \App\Models\Chitter $chitter
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Chitter $chitter)
+    public function delete(User $user, Chitter $chitter): Response|bool
     {
-        //
+        return $this->update($user, $chitter);
     }
 
     /**
