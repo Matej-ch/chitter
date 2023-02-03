@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChitterPostRequest;
 use App\Models\Chitter;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -34,17 +35,27 @@ class ChitterController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return Application|RedirectResponse|Redirector
      */
-    public function store(Request $request): Redirector|RedirectResponse|Application
+    public function store(ChitterPostRequest $request): Redirector|RedirectResponse|Application
     {
-        $validated = $request->validate([
-            'message' => 'required|string|max:255'
-        ]);
+        $validated = $request->validated();
 
         $request->user()->chitters()->create($validated);
+
+        return redirect(route('chitter.index'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     */
+    public function update(ChitterPostRequest $request, Chitter $chitter): Redirector|Application|RedirectResponse
+    {
+        $this->authorize('update', $chitter);
+
+        $validated = $request->validated();
+
+        $chitter->update($validated);
 
         return redirect(route('chitter.index'));
     }
@@ -69,18 +80,6 @@ class ChitterController extends Controller
     public function edit(Chitter $chitter)
     {
         //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Chitter $chitter
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Chitter $chitter)
-    {
-
     }
 
     /**
